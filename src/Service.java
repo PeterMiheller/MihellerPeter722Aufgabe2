@@ -82,8 +82,20 @@ public class Service {
      *
      * @return A list of all available patients.
      */
-    public List<Patienten> getAllPatiens() {
+    public void getAllPatiens1() {
+        List<Patienten> patienten = patientenRepo.getAll();
+        for (Patienten p : patienten) {
+            System.out.println(p);
+        }
+    }
+
+
+    public List<Patienten> getAllPatients() {
         return patientenRepo.getAll();
+    }
+
+    public List<Mrdikanemte> getAllMedicaments() {
+        return medikamenteRepo.getAll();
     }
 
     /**
@@ -91,72 +103,77 @@ public class Service {
      *
      * @return A list of all available medicaments.
      */
-    public List<Mrdikanemte> getAllMedikamente() {
-        return medikamenteRepo.getAll();
-    }
-    public List<Patienten> filterPatiensByDisease(String disease) {
-        return patientenRepo.getAll().stream().filter(k -> Objects.equals(k.getDisease(), disease)).toList();
+    public void getAllMedikamente1() {
+        List<Mrdikanemte> medicaments = medikamenteRepo.getAll();
+        for (Mrdikanemte p : medicaments) {
+            System.out.println(p);
+        }
     }
 
-    /**
-     * Displays patients who have medikaments for a disease
-     *
-     * @param krankheit The season to filter clients by.
-     * @return a list of Kunden.
-     */
-    public List<Patienten> viewPatientenByKrankheit(String krankheit) {
-        List<Patienten> patienten = patientenRepo.getAll();
-        List<Patienten> filteredPatients = new ArrayList<>();
-        for (Patienten k : patienten) {
-            boolean found = false;
-            for (Mrdikanemte p : k.getMedikamentList()) {
-                if (Objects.equals(p.getKrankheit(), krankheit)) {
-                    found = true;
+        public List<Patienten> filterPatiensByDisease (String disease){
+            return patientenRepo.getAll().stream().filter(k -> Objects.equals(k.getDisease(), disease)).toList();
+        }
+
+        /**
+         * Displays patients who have medikaments for a disease
+         *
+         * @param krankheit The season to filter clients by.
+         * @return a list of Kunden.
+         */
+        public List<Patienten> viewPatientenByKrankheit (String krankheit){
+            List<Patienten> patienten = patientenRepo.getAll();
+            List<Patienten> filteredPatients = new ArrayList<>();
+            for (Patienten k : patienten) {
+                boolean found = false;
+                for (Mrdikanemte p : k.getMedikamentList()) {
+                    if (Objects.equals(p.getKrankheit(), krankheit)) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    filteredPatients.add(k);
                 }
             }
-            if (found) {
-                filteredPatients.add(k);
+            return filteredPatients;
+        }
+
+        /**
+         * Sorts and displays the medicaments of a specific patient.
+         *
+         * @param patient The ID of the client whose products should be sorted.
+         * @param sorting The sorting order (e.g., "aufsteigend" or "absteigend").
+         * @return a sorted list.
+         */
+
+        public List<Mrdikanemte> sortProducts (Patienten patient, String sorting){
+            List<Mrdikanemte> medicaments = patient.getMedikamentList();
+            if (sorting.equals("aufsteigend")) {
+                medicaments.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
+            } else if (sorting.equals("absteigend")) {
+                medicaments.sort((p1, p2) -> p2.getName().compareTo(p1.getName()));
             }
+            return medicaments;
         }
-        return filteredPatients;
-    }
 
-    /**
-     * Sorts and displays the medicaments of a specific patient.
-     *
-     * @param patient The ID of the client whose products should be sorted.
-     * @param sorting The sorting order (e.g., "aufsteigend" or "absteigend").
-     * @return a sorted list.
-     */
-
-    public List<Mrdikanemte> sortProducts(Patienten patient, String sorting) {
-        List<Mrdikanemte> medicaments = patient.getMedikamentList();
-        if (sorting.equals("aufsteigend")) {
-            medicaments.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
-        } else if (sorting.equals("absteigend")) {
-            medicaments.sort((p1, p2) -> p2.getName().compareTo(p1.getName()));
+        /**
+         * Finds an object by its name.
+         *
+         * @param name The name of the object to find.
+         * @return The object if found.
+         */
+        public Mrdikanemte findMedicament (String name){
+            return medikamenteRepo.get(name);
         }
-        return medicaments;
-    }
-
-    /**
-     * Finds an object by its name.
-     *
-     * @param name The name of the object to find.
-     * @return The object if found.
-     */
-    public Mrdikanemte findMedicament(String name) {
-        return medikamenteRepo.get(name);
-    }
-    /**
-     * Finds an object by its id.
-     *
-     * @param id The id of the object to find.
-     * @return The object if found.
-     */
-    public Patienten findPatient(Integer id) {
-        return patientenRepo.get(id);
-    }
+        /**
+         * Finds an object by its id.
+         *
+         * @param id The id of the object to find.
+         * @return The object if found.
+         */
+        public Patienten findPatient (Integer id){
+            return patientenRepo.get(id);
+        }
 
 
-}
+    }
+

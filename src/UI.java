@@ -66,7 +66,7 @@ public class UI {
                     service.updatePatient(updatePatients(scanner));
                     break;
                 case "5":
-                    service.getAllPatiens();
+                    service.getAllPatiens1();
                     break;
                 case "6":
                     service.addMedikament(addMedicament(scanner));
@@ -81,7 +81,7 @@ public class UI {
                     service.updateMedikament(updateMedikament(scanner));
                     break;
                 case "10":
-                    service.getAllMedikamente();
+                    service.getAllMedikamente1();
                     break;
                 case "11":
                     service.filterPatiensByDisease(scanner.nextLine());
